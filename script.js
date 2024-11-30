@@ -1,4 +1,5 @@
 console.log("script.js loaded");
+let display =  document.querySelector("#display");
 
 let num1 = "";
 let num2 = "";
@@ -19,6 +20,10 @@ function multiply(a,b){
 }
 
 function divide(a,b){
+    if (b == "0"){
+        console.log(`division by 0`);
+        return "error";
+    }
     return parseFloat(a)/parseFloat(b);
 }
 
@@ -43,29 +48,57 @@ function calculator(){
 }
 
 // calculator();
+function updateDisplay(num){
+    display.textContent = `${num}`;
+}
 
 function buildExpression(char,type){
     if(type === `numbers` && !isNum2){
         num1+=char;
+        updateDisplay(num1);
     }
     else if(type === `numbers` && isNum2){
         num2+=char;
+        updateDisplay(num2);
     }
     else if(type === "operands" && !isNum2){
+        if(char === "=") return;
         if(num1 === "") num1 = "0";
         isNum2 = true;
         operand = char;
+        updateDisplay(operand);
     }
     else if(type === "operands" && isNum2){
-        if(num2 === "") num2 = "0";
-        lastNum = operation(num1,num2,operand);
-        if(char === "="){
+        if(num2 === "" && char != "="){
+            operand = char;
+            updateDisplay(operand);
+            console.log(`num1: ${num1} num2: ${num2} operand: ${operand} isNum2: ${isNum2} result: ${lastNum}`);
+            return;
+        }
+
+
+        // clear case
+        if(char === "clear"){
             num1 = "";
             num2 = "";
             operand = "";
             isNum2 = false;
+            lastNum = "";
+            updateDisplay("");
+        }
+        else if (char === "="){
+            if(num2 === "") return; 
+            lastNum = operation(num1,num2,operand);
+            updateDisplay(lastNum);
+            num1 = lastNum;
+            lastNum = "";
+            num2 = "";
+            // remain true
+            isNum2 = true;
         }
         else{
+            lastNum = operation(num1,num2,operand);
+            updateDisplay(lastNum);
             num1 = lastNum;
             lastNum = "";
             num2 = "";

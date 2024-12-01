@@ -22,10 +22,12 @@ function multiply(a,b){
 function divide(a,b){
     if (b == "0"){
         console.log(`division by 0`);
-        return "error";
+        updateDisplay("error");
+        return 0;
     }
     return parseFloat(a)/parseFloat(b);
 }
+
 
 function operation(a,b,op){
     if(op === "+") return add(a,b);
@@ -47,18 +49,44 @@ function calculator(){
     console.log(operation(a,b,op));
 }
 
+function decimalCheck(){
+    console.log(`hello`);
+    if(num1.at(0) === ".") num1 = "0.";
+    if(num2.at(0) === ".") num2 = "0.";
+    if(num1.indexOf('.') != num1.lastIndexOf('.')&&num1.length>0){
+        num1 = num1.slice(0,num1.length-1);
+        }
+    console.log(num1);
+    if(num2.indexOf('.') != num2.lastIndexOf('.')&&num2.length>0){
+        num2 = num2.slice(0,num2.length-1);
+    }
+
+    console.log(num2);
+}
+
 // calculator();
 function updateDisplay(num){
     display.textContent = `${num}`;
 }
 
 function buildExpression(char,type){
-    if(type === `numbers` && !isNum2){
+    if(char === "clear"){
+        num1 = "";
+        num2 = "";
+        operand = "";
+        isNum2 = false;
+        lastNum = "";
+        updateDisplay("0");
+    }
+
+    else if(type === `numbers` && !isNum2){
         num1+=char;
+        decimalCheck();
         updateDisplay(num1);
     }
     else if(type === `numbers` && isNum2){
         num2+=char;
+        decimalCheck();
         updateDisplay(num2);
     }
     else if(type === "operands" && !isNum2){
@@ -75,22 +103,12 @@ function buildExpression(char,type){
             console.log(`num1: ${num1} num2: ${num2} operand: ${operand} isNum2: ${isNum2} result: ${lastNum}`);
             return;
         }
-
-
         // clear case
-        if(char === "clear"){
-            num1 = "";
-            num2 = "";
-            operand = "";
-            isNum2 = false;
-            lastNum = "";
-            updateDisplay("");
-        }
         else if (char === "="){
             if(num2 === "") return; 
             lastNum = operation(num1,num2,operand);
             updateDisplay(lastNum);
-            num1 = lastNum;
+            num1 = lastNum.toString();
             lastNum = "";
             num2 = "";
             // remain true
@@ -99,7 +117,7 @@ function buildExpression(char,type){
         else{
             lastNum = operation(num1,num2,operand);
             updateDisplay(lastNum);
-            num1 = lastNum;
+            num1 = lastNum.toString();
             lastNum = "";
             num2 = "";
             operand = char;

@@ -50,17 +50,17 @@ function calculator(){
 }
 
 function decimalCheck(){
-    console.log(`hello`);
     if(num1.at(0) === ".") num1 = "0.";
     if(num2.at(0) === ".") num2 = "0.";
+
     if(num1.indexOf('.') != num1.lastIndexOf('.')&&num1.length>0){
         num1 = num1.slice(0,num1.length-1);
         }
     console.log(num1);
+
     if(num2.indexOf('.') != num2.lastIndexOf('.')&&num2.length>0){
         num2 = num2.slice(0,num2.length-1);
     }
-
     console.log(num2);
 }
 
@@ -77,6 +77,28 @@ function buildExpression(char,type){
         isNum2 = false;
         lastNum = "";
         updateDisplay("0");
+    }
+
+    else if(char === "negate" && !isNum2){
+        if(num1.at(0) != '-'){
+            num1 = '-' + num1;
+        }
+        else{
+            num1 = num1.slice(1,num1.length);
+        }
+        console.log("HELLO!");
+        updateDisplay(num1);
+    }
+
+    else if(char === "negate" && isNum2){
+        if(num2.at(0) != '-'){
+            num2 = '-' + num2;
+        }
+        else{
+            num2 = num2.slice(1,num2.length);
+        }
+        console.log("HELLO!");
+        updateDisplay(num2);
     }
 
     else if(type === `numbers` && !isNum2){
@@ -112,7 +134,7 @@ function buildExpression(char,type){
             lastNum = "";
             num2 = "";
             // remain true
-            isNum2 = true;
+            isNum2 = false;
         }
         else{
             lastNum = operation(num1,num2,operand);
@@ -128,10 +150,7 @@ function buildExpression(char,type){
     console.log(`num1: ${num1} num2: ${num2} operand: ${operand} isNum2: ${isNum2} result: ${lastNum}`);
 }
 
-
 // get input from buttons
-
-
 
 const buttons = document.getElementById("buttons");
 buttons.addEventListener('click',(e)=>{

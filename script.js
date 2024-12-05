@@ -166,3 +166,29 @@ buttons.addEventListener('click',(e)=>{
         }
     }
 })
+
+document.addEventListener('keydown',(e)=>{
+    // console.log(e.key);
+    key = e.key;
+    if(key >=0 && key <=9){
+        const buttonToClick = document.getElementById(`${key}`);
+        buttonToClick.click();
+        buttonToClick.classList.toggle(`active`);
+        // run the lambda after 200ms
+        setTimeout(()=>{buttonToClick.classList.toggle(`active`)}, 200);
+    }
+    if(key === "Backspace"){
+        const buttonToClick = document.getElementById(`clear`);
+        buttonToClick.click();
+        buttonToClick.classList.toggle(`active`);
+        // run the lambda after 200ms
+        setTimeout(()=>{buttonToClick.classList.toggle(`active`)}, 1);
+    }
+    if(key === "-" || key === `+` || key === '*' || key === `/` || key === '='){
+        const buttonToClick = document.getElementById(`${key}`);
+        buttonToClick.click();
+        buttonToClick.classList.toggle(`active`);
+        // run the lambda after 200ms
+        setTimeout(()=>{buttonToClick.classList.toggle(`active`)}, 1);
+    }
+});

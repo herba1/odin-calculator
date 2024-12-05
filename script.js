@@ -22,34 +22,32 @@ function multiply(a,b){
 function divide(a,b){
     if (b == "0"){
         console.log(`division by 0`);
-        updateDisplay("error");
-        return 0;
+        return "ERR-0DIV";
     }
     return parseFloat(a)/parseFloat(b);
 }
 
 
 function operation(a,b,op){
-    if(op === "+") return add(a,b);
-    if(op === "-") return subtract(a,b);
-    if(op === "*" || op === "x" || op === "X") return multiply(a,b);
-    if(op === "/") return divide(a,b);
+    let result = "";
+    // if(op === "+") return add(a,b);
+    // if(op === "-") return subtract(a,b);
+    // if(op === "*") return multiply(a,b);
+    // if(op === "/") return divide(a,b);
+    if(op === "+") result = add(a,b);
+    if(op === "-") result = subtract(a,b);
+    if(op === "*") result = multiply(a,b);
+    if(op === "/") result = divide(a,b);
+    result = result.toString();
+    if(result.length>10) result = "ERR-RANGE";
+    return result;
+
 }
 
-function calculator(){
-    let a = 0; let b = 0; let op = "";
-    console.log("input number");
-    a = Number(prompt("num1"));
-    op = String(prompt("operand"));
-    b = Number(prompt("num2")); 
-    console.log(a);
-    console.log(b);
-    console.log(op);
-
-    console.log(operation(a,b,op));
-}
 
 function decimalCheck(){
+    if(num1.length>10) num1 = num1.slice(0,10);
+    if(num2.length>10) num2 = num2.slice(0,10);
     if(num1.at(0) === ".") num1 = "0.";
     if(num2.at(0) === ".") num2 = "0.";
 
@@ -130,24 +128,31 @@ function buildExpression(char,type){
             if(num2 === "") return; 
             lastNum = operation(num1,num2,operand);
             updateDisplay(lastNum);
-            num1 = lastNum.toString();
+            // error
+            if(lastNum.at(0) === `E`){
+                lastNum = "0";
+            };
+            num1 = lastNum;
             lastNum = "";
             num2 = "";
-            // remain true
             isNum2 = false;
         }
         else{
             lastNum = operation(num1,num2,operand);
             updateDisplay(lastNum);
-            num1 = lastNum.toString();
+            // error
+            if(lastNum.at(0) === `E`){
+                lastNum = "0";
+            };
+            num1 = lastNum;
             lastNum = "";
             num2 = "";
             operand = char;
-            // remain true
             isNum2 = true;
         }
     }
     console.log(`num1: ${num1} num2: ${num2} operand: ${operand} isNum2: ${isNum2} result: ${lastNum}`);
+    console.log(lastNum);
 }
 
 // get input from buttons
@@ -168,9 +173,9 @@ buttons.addEventListener('click',(e)=>{
 })
 
 document.addEventListener('keydown',(e)=>{
-    // console.log(e.key);
+    console.log(e.key);
     key = e.key;
-    if(key >=0 && key <=9){
+    if(key >=0 && key <=9 || key === '.'){
         const buttonToClick = document.getElementById(`${key}`);
         buttonToClick.click();
         buttonToClick.classList.toggle(`active`);
@@ -184,7 +189,8 @@ document.addEventListener('keydown',(e)=>{
         // run the lambda after 200ms
         setTimeout(()=>{buttonToClick.classList.toggle(`active`)}, 1);
     }
-    if(key === "-" || key === `+` || key === '*' || key === `/` || key === '='){
+    if(key === "-" || key === `+` || key === '*' || key === `/` || key === '=' || key === `Enter`){
+        if(key === `Enter`) key = `=`;
         const buttonToClick = document.getElementById(`${key}`);
         buttonToClick.click();
         buttonToClick.classList.toggle(`active`);

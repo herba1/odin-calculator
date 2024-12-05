@@ -151,7 +151,6 @@ function buildExpression(char,type){
 }
 
 // get input from buttons
-
 const buttons = document.getElementById("buttons");
 buttons.addEventListener('click',(e)=>{
     const isButton = e.target.matches('.button');

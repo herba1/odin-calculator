@@ -39,7 +39,12 @@ function operation(a,b,op){
     if(op === "*") result = multiply(a,b);
     if(op === "/") result = divide(a,b);
     result = result.toString();
-    if(result.length>10) result = "ERR-RANGE";
+    if(result.length>10){
+        if(parseFloat(result) > 999999999){
+            result = "ERR-MAX-VAL"
+        }
+        else(result = result.slice(0,10));
+    } 
     return result;
 
 }
